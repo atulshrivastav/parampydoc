@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>parampy module &mdash; parampy  documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="parampy  documentation" href="index.html" />
+    <link rel="prev" title="Welcome to parampy’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-parampy">
+<span id="parampy-module"></span><h1>parampy module<a class="headerlink" href="#module-parampy" title="Permalink to this headline">¶</a></h1>
+<p>This module is used as utility for paramiko.</p>
+<div class="section" id="parampy">
+<h2>parampy<a class="headerlink" href="#parampy" title="Permalink to this headline">¶</a></h2>
+<p>Paramiko utility in Python.</p>
+<p>The main use cases of the library are:</p>
+<div class="highlight-python"><div class="highlight"><pre>* Nested ssh.
+
+* sudoer ssh.
+
+* Switch ssh.
+</pre></div>
+</div>
+</div>
+<div class="section" id="usage">
+<h2>Usage:<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>The module provides three main functionality:</p>
+<div class="highlight-python"><div class="highlight"><pre>* Nested ssh.
+
+* sudoer ssh.
+
+* Switch ssh.
+</pre></div>
+</div>
+<p>Examples in this file use Python2.7.</p>
+</div>
+<div class="section" id="nested-ssh">
+<h2>Nested ssh<a class="headerlink" href="#nested-ssh" title="Permalink to this headline">¶</a></h2>
+<p>To perform nested ssh user need to import SSHTool class from parampy:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">parampy</span> <span class="kn">import</span> <span class="n">SSHTool</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">host</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">22</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">via_host</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;192.168.2.4&#39;</span><span class="p">,</span> <span class="mi">22</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">command</span> <span class="o">=</span> <span class="s">&#39;ls -ltr&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ssht</span> <span class="o">=</span> <span class="n">SSHTool</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="s">&#39;tmpuser&#39;</span><span class="p">,</span> <span class="s">&#39;pass&#39;</span><span class="p">,</span> <span class="n">via</span><span class="o">=</span><span class="n">via_host</span><span class="p">,</span> <span class="n">via_user</span><span class="o">=</span><span class="s">&#39;viauser, via_auth=&#39;</span><span class="k">pass</span><span class="s">&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span> <span class="o">=</span> <span class="n">ssht</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+
+<span class="go">--------  --------  -------------------</span>
+<span class="go">-rwxrwxrwx 1 max max      0 May 25 23:30 __init__.py</span>
+<span class="go">-rwxrwxr-x 1 max max   1321 Jul  7 23:22 accordion.js</span>
+<span class="go">drwxrwxr-x 2 max max   4096 Jul  7 23:22 img</span>
+<span class="go">-rwxrwxr-x 1 max max   2970 Jul  7 23:22 demo.css</span>
+<span class="go">-rwxrwxr-x 1 max max  47861 Jul  7 23:22 defaults.css</span>
+</pre></div>
+</div>
+<p>If user want to pause for sometime if commanexecution in host is taking time he can pass time value while
+calling run method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ssht</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sudoer-ssh">
+<h2>sudoer ssh<a class="headerlink" href="#sudoer-ssh" title="Permalink to this headline">¶</a></h2>
+<p>To perform sudoer ssh means if user want to ssh on some host and host is asking password or expecting any key from user,
+user can import sudo_ssh from parampy:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">parampy</span> <span class="kn">import</span> <span class="n">sudo_ssh</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">command</span> <span class="o">=</span> <span class="s">&#39;ls -ltr&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span> <span class="o">=</span> <span class="n">sudo_ssh</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">sudo_pass</span><span class="o">=</span><span class="s">&#39;test@123&#39;</span><span class="p">)</span>
+
+<span class="go">--------  --------  -------------------</span>
+<span class="go">-rwxrwxrwx 1 max max      0 May 25 23:30 __init__.py</span>
+<span class="go">-rwxrwxr-x 1 max max   1321 Jul  7 23:22 accordion.js</span>
+<span class="go">drwxrwxr-x 2 max max   4096 Jul  7 23:22 img</span>
+<span class="go">-rwxrwxr-x 1 max max   2970 Jul  7 23:22 demo.css</span>
+<span class="go">-rwxrwxr-x 1 max max  47861 Jul  7 23:22 defaults.css</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="switch-ssh">
+<h2>Switch ssh<a class="headerlink" href="#switch-ssh" title="Permalink to this headline">¶</a></h2>
+<p>To perform ssh in switch and execute some commands,
+user can import ssh_switch from parampy:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">parampy</span> <span class="kn">import</span> <span class="n">ssh_switch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">command</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;interconnect bay3&#39;</span><span class="p">,</span> <span class="s">&#39;test@123&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span> <span class="o">=</span> <span class="p">(</span><span class="n">ip</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span>
+
+<span class="go">--------  --------     -------------------</span>
+<span class="go">switch_ip 127.32.33.44 connected</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="contributors">
+<h2>Contributors<a class="headerlink" href="#contributors" title="Permalink to this headline">¶</a></h2>
+<p>Atul Shrivastav, Mikhilesh Sekhar.</p>
+<dl class="class">
+<dt id="parampy.SSHTool">
+<em class="property">class </em><code class="descclassname">parampy.</code><code class="descname">SSHTool</code><span class="sig-paren">(</span><em>host</em>, <em>user='nfvadmin'</em>, <em>auth='HP1nvent'</em>, <em>via=None</em>, <em>via_user=None</em>, <em>via_auth=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/parampy.html#SSHTool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#parampy.SSHTool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for utilty contains method for paramiko by overriding paramiko class.</p>
+<p>Nested ssh is also covered with this class.</p>
+<p>Example:
+ssht = SSHTool(ip_address, user, password)
+output = ssht.run(command)</p>
+<dl class="docutils">
+<dt>Example 1:</dt>
+<dd>ssht = SSHTool(ip_address, user, password)
+output = ssht.run(command, pause=milicescond)</dd>
+</dl>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">Need to add authorization with auth_key too.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If nested ssh pass value should be looks like below -
+host = (&#8216;192.168.1.1&#8217;, 22)
+via_host = (&#8216;10.10.10.10&#8217;, 22)</p>
+</div>
+<dl class="method">
+<dt id="parampy.SSHTool.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/parampy.html#SSHTool.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#parampy.SSHTool.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the SSH Transport.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="parampy.SSHTool.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>cmd</em>, <em>pause=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/parampy.html#SSHTool.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#parampy.SSHTool.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method will execute command in current channel.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>cmd (string): Contains the commands need to execute.
+pause (int): If execution of command is taking time user can pass the interval.</dd>
+<dt>Return:</dt>
+<dd>(String): Contains output for executed command.</dd>
+<dt>Process:</dt>
+<dd><ul class="first last simple">
+<li>This method will open session for current transport channel.</li>
+<li>It will set the error and output for standerd output.</li>
+<li>Execute the commands which is passed.</li>
+<li>Store the output in buffer if channel is ready for recieving.</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="parampy.ssh_switch">
+<code class="descclassname">parampy.</code><code class="descname">ssh_switch</code><span class="sig-paren">(</span><em>ip</em>, <em>user</em>, <em>password</em>, <em>timeout=30</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/parampy.html#ssh_switch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#parampy.ssh_switch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to called for executing commands in the switch console.</p>
+<p>:param ip:IP address of the switch(managment ip address)
+:param user: Login user name for the switch
+:param password: Login password for the switch
+:param cmd: Command that need to be execute in the switch console
+:return: channel_data</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="parampy.sudo_ssh">
+<code class="descclassname">parampy.</code><code class="descname">sudo_ssh</code><span class="sig-paren">(</span><em>ip</em>, <em>user</em>, <em>auth</em>, <em>cmd</em>, <em>sudo_pass=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/parampy.html#sudo_ssh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#parampy.sudo_ssh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for sudo commands.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>ip (string): IP Address for host to connect.
+user (string): User name for host.
+auth (string): Password for host
+sudo_pass (string): Sudo password(optional).</dd>
+<dt>Return:</dt>
+<dd>(String) : output of exected command.</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">parampy module</a><ul>
+<li><a class="reference internal" href="#parampy">parampy</a></li>
+<li><a class="reference internal" href="#usage">Usage:</a></li>
+<li><a class="reference internal" href="#nested-ssh">Nested ssh</a></li>
+<li><a class="reference internal" href="#sudoer-ssh">sudoer ssh</a></li>
+<li><a class="reference internal" href="#switch-ssh">Switch ssh</a></li>
+<li><a class="reference internal" href="#contributors">Contributors</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to parampy&#8217;s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/parampy.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="_sources/parampy.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

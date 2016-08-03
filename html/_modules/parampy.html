@@ -1,0 +1,339 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>parampy &mdash; parampy  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="parampy  documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for parampy</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;This module is used as utility for paramiko.</span>
+
+
+<span class="sd">parampy</span>
+<span class="sd">------</span>
+
+<span class="sd">Paramiko utility in Python.</span>
+
+<span class="sd">.. Built-In Modules::</span>
+
+<span class="sd">    paramiko</span>
+<span class="sd">    time</span>
+
+<span class="sd">The main use cases of the library are::</span>
+
+<span class="sd">    * Nested ssh.</span>
+
+<span class="sd">    * sudoer ssh.</span>
+
+<span class="sd">    * Switch ssh.</span>
+
+
+
+<span class="sd">Usage:</span>
+<span class="sd">-----</span>
+
+<span class="sd">The module provides three main functionality::</span>
+
+<span class="sd">    * Nested ssh.</span>
+
+<span class="sd">    * sudoer ssh.</span>
+
+<span class="sd">    * Switch ssh.</span>
+
+
+<span class="sd">Examples in this file use Python2.7.</span>
+
+
+<span class="sd">Nested ssh</span>
+<span class="sd">-----</span>
+
+<span class="sd">To perform nested ssh user need to import SSHTool class from parampy::</span>
+
+<span class="sd">    &gt;&gt;&gt; from parampy import SSHTool</span>
+<span class="sd">    &gt;&gt;&gt; host = (&#39;127.0.0.1&#39;, 22)</span>
+<span class="sd">    &gt;&gt;&gt; via_host = (&#39;192.168.2.4&#39;, 22)</span>
+<span class="sd">    &gt;&gt;&gt; command = &#39;ls -ltr&#39;</span>
+<span class="sd">    &gt;&gt;&gt; ssht = SSHTool(host, &#39;tmpuser&#39;, &#39;pass&#39;, via=via_host, via_user=&#39;viauser, via_auth=&#39;pass&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; output = ssht.run(command)</span>
+
+<span class="sd">    --------  --------  -------------------</span>
+<span class="sd">    -rwxrwxrwx 1 max max      0 May 25 23:30 __init__.py</span>
+<span class="sd">    -rwxrwxr-x 1 max max   1321 Jul  7 23:22 accordion.js</span>
+<span class="sd">    drwxrwxr-x 2 max max   4096 Jul  7 23:22 img</span>
+<span class="sd">    -rwxrwxr-x 1 max max   2970 Jul  7 23:22 demo.css</span>
+<span class="sd">    -rwxrwxr-x 1 max max  47861 Jul  7 23:22 defaults.css</span>
+
+<span class="sd">If user want to pause for sometime if commanexecution in host is taking time he can pass time value while</span>
+<span class="sd">calling run method::</span>
+
+<span class="sd">    &gt;&gt;&gt; ssht.run(command)</span>
+
+<span class="sd">sudoer ssh</span>
+<span class="sd">-----</span>
+
+<span class="sd">To perform sudoer ssh means if user want to ssh on some host and host is asking password or expecting any key from user,</span>
+<span class="sd">user can import sudo_ssh from parampy::</span>
+
+<span class="sd">    &gt;&gt;&gt; from parampy import sudo_ssh</span>
+<span class="sd">    &gt;&gt;&gt; command = &#39;ls -ltr&#39;</span>
+<span class="sd">    &gt;&gt;&gt; output = sudo_ssh(ip, user, password, command, sudo_pass=&#39;test@123&#39;)</span>
+
+<span class="sd">    --------  --------  -------------------</span>
+<span class="sd">    -rwxrwxrwx 1 max max      0 May 25 23:30 __init__.py</span>
+<span class="sd">    -rwxrwxr-x 1 max max   1321 Jul  7 23:22 accordion.js</span>
+<span class="sd">    drwxrwxr-x 2 max max   4096 Jul  7 23:22 img</span>
+<span class="sd">    -rwxrwxr-x 1 max max   2970 Jul  7 23:22 demo.css</span>
+<span class="sd">    -rwxrwxr-x 1 max max  47861 Jul  7 23:22 defaults.css</span>
+
+<span class="sd">Switch ssh</span>
+<span class="sd">-----</span>
+
+<span class="sd">To perform ssh in switch and execute some commands,</span>
+<span class="sd">user can import ssh_switch from parampy::</span>
+
+<span class="sd">    &gt;&gt;&gt; from parampy import ssh_switch</span>
+<span class="sd">    &gt;&gt;&gt; command = [&#39;interconnect bay3&#39;, &#39;test@123&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; output = (ip, user, password, timeout=30, command)</span>
+
+<span class="sd">    --------  --------     -------------------</span>
+<span class="sd">    switch_ip 127.32.33.44 connected</span>
+
+<span class="sd">Contributors</span>
+<span class="sd">------------</span>
+
+<span class="sd">Atul Shrivastav, Mikhilesh Sekhar.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">paramiko</span> <span class="kn">as</span> <span class="nn">param</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+
+
+<div class="viewcode-block" id="ssh_switch"><a class="viewcode-back" href="../parampy.html#parampy.ssh_switch">[docs]</a><span class="k">def</span> <span class="nf">ssh_switch</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Method to called for executing commands in the switch console.</span>
+
+<span class="sd">    :param ip:IP address of the switch(managment ip address)</span>
+<span class="sd">    :param user: Login user name for the switch</span>
+<span class="sd">    :param password: Login password for the switch</span>
+<span class="sd">    :param cmd: Command that need to be execute in the switch console</span>
+<span class="sd">    :return: channel_data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">channel_data</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+    <span class="n">ssh</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">SSHClient</span><span class="p">()</span>
+    <span class="n">ssh</span><span class="o">.</span><span class="n">set_missing_host_key_policy</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">AutoAddPolicy</span><span class="p">())</span>
+    <span class="n">ssh</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">hostname</span><span class="o">=</span><span class="n">ip</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                <span class="n">look_for_keys</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                <span class="n">allow_agent</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">channel</span> <span class="o">=</span> <span class="n">ssh</span><span class="o">.</span><span class="n">invoke_shell</span><span class="p">()</span>
+    <span class="n">channel</span><span class="o">.</span><span class="n">settimeout</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">chan</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">channel</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">chan</span><span class="p">)</span>
+        <span class="n">channel</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+    <span class="n">channel</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;quit&quot;</span><span class="p">)</span>
+    <span class="n">channel</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">channel</span><span class="o">.</span><span class="n">recv_ready</span><span class="p">():</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">channel_data</span> <span class="o">+=</span> <span class="n">channel</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">channel_data</span></div>
+
+
+<div class="viewcode-block" id="SSHTool"><a class="viewcode-back" href="../parampy.html#parampy.SSHTool">[docs]</a><span class="k">class</span> <span class="nc">SSHTool</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Class for utilty contains method for paramiko by overriding paramiko class.</span>
+
+<span class="sd">    Nested ssh is also covered with this class.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    ssht = SSHTool(ip_address, user, password)</span>
+<span class="sd">    output = ssht.run(command)</span>
+
+<span class="sd">    Example 1:</span>
+<span class="sd">        ssht = SSHTool(ip_address, user, password)</span>
+<span class="sd">        output = ssht.run(command, pause=milicescond)</span>
+
+<span class="sd">    .. TODO::</span>
+<span class="sd">        Need to add authorization with auth_key too.</span>
+
+<span class="sd">    .. NOTE::</span>
+<span class="sd">        If nested ssh pass value should be looks like below -</span>
+<span class="sd">        host = (&#39;192.168.1.1&#39;, 22)</span>
+<span class="sd">        via_host = (&#39;10.10.10.10&#39;, 22)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s">&#39;nfvadmin&#39;</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="s">&#39;HP1nvent&#39;</span><span class="p">,</span>
+                 <span class="n">via</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">via_user</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">via_auth</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor for current class.</span>
+
+<span class="sd">        It will initialize the paramiko object. it will create transport object for host.</span>
+<span class="sd">        After starting client for transport object it will authorize with auth_password,</span>
+<span class="sd">        by passing user name and password.</span>
+
+<span class="sd">        If its a nested ssh it will check via value it will do above process for parent host,</span>
+<span class="sd">        and with parent host transport object it will create child transport for host.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            host (String): IP Address for host</span>
+<span class="sd">            user (String): Username for host</span>
+<span class="sd">            auth (String): Password for host</span>
+<span class="sd">            via (Optional): IP Address for parent host</span>
+<span class="sd">            via_user (Optional): Username for parent host</span>
+<span class="sd">            via_auth (Optional): Password for parent host</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">via</span><span class="p">:</span>
+            <span class="n">t0</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Transport</span><span class="p">(</span><span class="n">via</span><span class="p">)</span>
+            <span class="n">t0</span><span class="o">.</span><span class="n">start_client</span><span class="p">()</span>
+            <span class="n">t0</span><span class="o">.</span><span class="n">auth_password</span><span class="p">(</span><span class="n">via_user</span><span class="p">,</span> <span class="n">via_auth</span><span class="p">)</span>
+            <span class="c"># setup forwarding from 127.0.0.1:&lt;free_random_port&gt; to |host|</span>
+            <span class="n">channel</span> <span class="o">=</span> <span class="n">t0</span><span class="o">.</span><span class="n">open_channel</span><span class="p">(</span><span class="s">&#39;direct-tcpip&#39;</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Transport</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">Transport</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">start_client</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">auth_password</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">auth</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SSHTool.run"><a class="viewcode-back" href="../parampy.html#parampy.SSHTool.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">pause</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method will execute command in current channel.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            cmd (string): Contains the commands need to execute.</span>
+<span class="sd">            pause (int): If execution of command is taking time user can pass the interval.</span>
+
+<span class="sd">        Return:</span>
+<span class="sd">            (String): Contains output for executed command.</span>
+
+<span class="sd">        Process:</span>
+<span class="sd">            - This method will open session for current transport channel.</span>
+<span class="sd">            - It will set the error and output for standerd output.</span>
+<span class="sd">            - Execute the commands which is passed.</span>
+<span class="sd">            - Store the output in buffer if channel is ready for recieving.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">open_session</span><span class="p">()</span>
+        <span class="n">ch</span><span class="o">.</span><span class="n">set_combine_stderr</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">ch</span><span class="o">.</span><span class="n">exec_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="n">retcode</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">recv_exit_status</span><span class="p">()</span>
+        <span class="n">buf</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">pause</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">pause</span><span class="p">)</span>
+        <span class="k">while</span> <span class="n">ch</span><span class="o">.</span><span class="n">recv_ready</span><span class="p">():</span>
+            <span class="n">buf</span> <span class="o">+=</span> <span class="n">ch</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">retcode</span><span class="p">,</span> <span class="n">buf</span></div>
+
+<div class="viewcode-block" id="SSHTool.close"><a class="viewcode-back" href="../parampy.html#parampy.SSHTool.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Close the SSH Transport.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Attempt to clean up if not explicitly closed.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="sudo_ssh"><a class="viewcode-back" href="../parampy.html#parampy.sudo_ssh">[docs]</a><span class="k">def</span> <span class="nf">sudo_ssh</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">auth</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">sudo_pass</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Method for sudo commands.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ip (string): IP Address for host to connect.</span>
+<span class="sd">        user (string): User name for host.</span>
+<span class="sd">        auth (string): Password for host</span>
+<span class="sd">        sudo_pass (string): Sudo password(optional).</span>
+
+<span class="sd">    Return:</span>
+<span class="sd">        (String) : output of exected command.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ssh</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">SSHClient</span><span class="p">()</span>
+    <span class="n">ssh</span><span class="o">.</span><span class="n">set_missing_host_key_policy</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">AutoAddPolicy</span><span class="p">())</span>
+    <span class="n">ssh</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">hostname</span><span class="o">=</span><span class="n">ip</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                <span class="n">look_for_keys</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                <span class="n">allow_agent</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">)</span> <span class="o">=</span> <span class="n">ssh</span><span class="o">.</span><span class="n">exec_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">get_pty</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sudo_pass</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+    <span class="n">stdin</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">stderr</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">stdout</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">res</span><span class="p">:</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">res</span>
+
+    <span class="k">return</span> <span class="n">output</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
